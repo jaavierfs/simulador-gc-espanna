@@ -1,0 +1,158 @@
+[
+  {
+    "id": "01",
+    "name": "Andalucía",
+    "pop": 8666412,
+    "color": "#54a78b",
+    "center": [219.05643554687495, 530.9641308593751],
+    "capitalProvinces": ["p41"]
+  },
+  {
+    "id": "02",
+    "name": "Aragón",
+    "pop": 1358812,
+    "color": "#c67c43",
+    "center": [497.92216796875005, 192.98595703125],
+    "capitalProvinces": ["p50"]
+  },
+  {
+    "id": "03",
+    "name": "Asturias",
+    "pop": 1013529,
+    "color": "#699ab9",
+    "center": [213.70378906250002, 54.50035156249999],
+    "capitalProvinces": ["p33"]
+  },
+  {
+    "id": "06",
+    "name": "Cantabria",
+    "pop": 593964,
+    "color": "#ca8097",
+    "center": [315.69130859375, 65.93720703125],
+    "capitalProvinces": ["p39"]
+  },
+  {
+    "id": "07",
+    "name": "Castilla y León",
+    "pop": 2398500,
+    "color": "#d0ad54",
+    "center": [274.3527636718749, 196.75098632812498],
+    "capitalProvinces": ["p47"]
+  },
+  {
+    "id": "08",
+    "name": "Castilla-La Mancha",
+    "pop": 2119234,
+    "color": "#b58dba",
+    "center": [302.9723828124999, 329.47863281249994],
+    "capitalProvinces": ["p45"]
+  },
+  {
+    "id": "09",
+    "name": "Cataluña",
+    "pop": 8146265,
+    "color": "#d76b53",
+    "center": [675.289853515625, 189.07756835937505],
+    "capitalProvinces": ["p08"]
+  },
+  {
+    "id": "10",
+    "name": "C. Valenciana",
+    "pop": 5415843,
+    "color": "#e2a05a",
+    "center": [517.525107421875, 381.878935546875],
+    "capitalProvinces": ["p46"]
+  },
+  {
+    "id": "11",
+    "name": "Extremadura",
+    "pop": 1051638,
+    "color": "#8fa568",
+    "center": [185.86748046875002, 435.50259765625],
+    "capitalProvinces": ["p06"]
+  },
+  {
+    "id": "12",
+    "name": "Galicia",
+    "pop": 2713169,
+    "color": "#72b3ad",
+    "center": [52.822861328125015, 77.61596679687501],
+    "capitalProvinces": ["p15"]
+  },
+  {
+    "id": "13",
+    "name": "Madrid",
+    "pop": 7137031,
+    "color": "#cb5f76",
+    "center": [337.19652343750005, 280.28917968750005],
+    "capitalProvinces": ["p28"]
+  },
+  {
+    "id": "14",
+    "name": "Murcia",
+    "pop": 1589138,
+    "color": "#98a1c8",
+    "center": [473.43952148437495, 486.6427441406249],
+    "capitalProvinces": ["p30"]
+  },
+  {
+    "id": "15",
+    "name": "Navarra",
+    "pop": 683500,
+    "color": "#a9b97b",
+    "center": [457.799453125, 105.35851562499998],
+    "capitalProvinces": ["p31"]
+  },
+  {
+    "id": "16",
+    "name": "País Vasco",
+    "pop": 2242342,
+    "color": "#6b9e79",
+    "center": [417.18273437499994, 93.244296875],
+    "capitalProvinces": ["p01"]
+  },
+  {
+    "id": "17",
+    "name": "La Rioja",
+    "pop": 327286,
+    "color": "#b9956c",
+    "center": [395.60658203124996, 134.37009765624998],
+    "capitalProvinces": ["p26"]
+  },
+  {
+    "id": "04",
+    "name": "Baleares",
+    "pop": 1237480,
+    "color": "#9270b8",
+    "center": [738.87142578125, 353.81494140625],
+    "addedMaritime": true,
+    "capitalProvinces": ["p07"]
+  },
+  {
+    "id": "05",
+    "name": "Canarias",
+    "pop": 2249976,
+    "color": "#dbb657",
+    "center": [63.491132812499984, 804.5405859374998],
+    "addedMaritime": true,
+    "capitalProvinces": ["p35", "p38"]
+  },
+  {
+    "id": "18",
+    "name": "Ceuta",
+    "pop": 83595,
+    "color": "#8794ad",
+    "center": [244.52554687500006, 648.7127343750001],
+    "addedMaritime": true,
+    "capitalProvinces": ["p51"]
+  },
+  {
+    "id": "19",
+    "name": "Melilla",
+    "pop": 86780,
+    "color": "#70a4c1",
+    "center": [386.3254687500001, 696.4282812499999],
+    "addedMaritime": true,
+    "capitalProvinces": ["p52"]
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "name": "guerra-civil-espanola",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Simulador de conquista provincial de EspaÃ±a, preparado para GitHub Pages.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "dev": "node scripts/serve.mjs",
+    "dev:lan": "node scripts/serve.mjs --host=0.0.0.0",
+    "test": "node tests/rules.test.mjs && node tests/presentation.test.mjs",
+    "test:balance": "node tests/balance.test.mjs",
+    "maps:rebuild": "node scripts/rebuild-maps.mjs"
+  }
+}

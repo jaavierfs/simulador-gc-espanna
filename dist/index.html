@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0d1827" />
+    <title>Guerra Civil Española 2.0</title>
+    <link rel="stylesheet" href="style.css?v=github1" />
+  </head>
+  <body>
+    <main class="game" id="game">
+      <header>
+        <a class="brand" href="./"
+          ><span>✳</span> GUERRA CIVIL <b>ESPAÑOLA 2.0</b></a
+        >
+        <div>
+          <button
+            id="rotateLayout"
+            class="icon"
+            aria-label="Ver en horizontal"
+            title="Cambiar orientación"
+          >
+            ▭</button
+          ><button
+            id="soundToggle"
+            class="icon muted"
+            aria-label="Activar audio"
+            aria-pressed="false"
+          >
+            ♫</button
+          ><button
+            id="full"
+            class="icon"
+            aria-label="Activar pantalla completa"
+            title="Pantalla completa"
+          >
+            ⛶</button
+          ><button id="menuButton" class="icon" aria-label="Abrir menú">
+            ☰
+          </button>
+        </div>
+      </header>
+      <div class="status">
+        <span><i class="live"></i> <b id="remaining">19</b> en pie</span
+        ><span><span class="round-label">RONDA</span> <b id="turn">00</b></span>
+      </div>
+      <section class="map-panel" aria-label="Tablero de la partida">
+        <div class="map-top">
+          <span id="mapStatus">ESPAÑA, EN CALMA</span
+          ><button id="overview" class="small">Ver España ↗</button>
+        </div>
+        <svg
+          id="map"
+          viewBox="-110 -95 1010 970"
+          role="img"
+          aria-label="Mapa de las cincuenta provincias y dos ciudades autónomas"
+        >
+          <defs>
+            <pattern
+              id="grid"
+              width="35"
+              height="35"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M35 0H0V35"
+                fill="none"
+                stroke="#fff"
+                stroke-opacity=".035"
+              />
+            </pattern>
+            <marker
+              id="arrow"
+              viewBox="0 0 10 10"
+              refX="9"
+              refY="5"
+              markerWidth="7"
+              markerHeight="7"
+              orient="auto-start-reverse"
+            >
+              <path d="M0 0L10 5L0 10Z" fill="#ffe2a3" />
+            </marker>
+          </defs>
+          <rect
+            x="-1000"
+            y="-1000"
+            width="3000"
+            height="3000"
+            fill="url(#grid)"
+          />
+          <g id="countryContext" aria-hidden="true"></g>
+          <g class="canary-inset" aria-hidden="true">
+            <rect x="-85" y="705" width="300" height="155" rx="8" />
+            <text x="-69" y="724">CANARIAS · RECUADRO</text>
+          </g>
+          <g id="territories"></g>
+          <g id="provinceBorders"></g>
+          <path id="arrowGlow" />
+          <path id="attackArrow" marker-end="url(#arrow)" />
+          <circle id="projectile" r="4">
+            <animateMotion dur="2.4s" repeatCount="indefinite">
+              <mpath href="#attackArrow" />
+            </animateMotion>
+          </circle>
+          <g id="effects"></g>
+          <g id="labels"></g>
+          <g id="provinceNames"></g>
+        </svg>
+        <div id="diceArena" class="dice-arena" hidden aria-live="polite"></div>
+        <div
+          id="battlePopup"
+          class="battle-popup"
+          role="status"
+          aria-live="polite"
+        ></div>
+        <div class="impact-word" id="impactWord" aria-hidden="true"></div>
+        <div id="inspector" class="inspector">
+          Toca una comunidad para explorar su territorio.
+        </div>
+        <div class="map-legend">
+          <span><i class="key attack"></i> Bando atacante</span
+          ><span><i class="key defense"></i> Bando defensor</span>
+        </div>
+      </section>
+      <section class="battle-panel" aria-label="Desarrollo de la batalla">
+        <div class="battle-heading">
+          <span id="phaseName">TU PRÓXIMA HISTORIA</span
+          ><span id="battleNumber">SIN TIRADAS</span>
+        </div>
+        <div
+          class="phase-track"
+          id="phaseTrack"
+          aria-label="Progreso de la batalla"
+        ></div>
+        <div id="battle"></div>
+        <div
+          id="narrative"
+          class="narrative"
+          role="status"
+          aria-live="polite"
+        ></div>
+      </section>
+      <section class="controls">
+        <div class="main-controls">
+          <button id="auto" class="play">▶ <span>Automático</span></button
+          ><button id="step" class="primary">
+            Empezar batalla <span>→</span>
+          </button>
+        </div>
+        <div class="sub-controls">
+          <label
+            >Ritmo
+            <select id="speed" aria-label="Ritmo de la simulación">
+              <option value="cinema">Cinemático · 15 s</option>
+              <option value="balanced" selected>Equilibrado · 11 s</option>
+              <option value="fast">Ágil · 8 s</option>
+            </select></label
+          ><span id="saveStatus">Guardado en este dispositivo</span
+          ><button id="rankingButton" class="small">Clasificación ↗</button>
+        </div>
+      </section>
+      <section
+        id="campaignOverlay"
+        class="campaign-overlay"
+        hidden
+        aria-live="polite"
+      >
+        <div class="campaign-orbit"></div>
+        <div id="campaignContent"></div>
+        <div class="campaign-actions">
+          <button id="campaignContinue" class="primary">Continuar →</button
+          ><button id="campaignRestart">Nueva partida ↺</button>
+        </div>
+      </section>
+    </main>
+    <dialog id="menu">
+      <button class="close" aria-label="Cerrar">×</button>
+      <p class="eyebrow">GUERRA CIVIL ESPAÑOLA 2.0</p>
+      <h2>A tu ritmo.</h2>
+      <p>
+        Avanza cada fase con el botón de la derecha o deja que la partida se
+        narre sola en modo automático. Puedes pausar en cualquier momento.
+      </p>
+      <section class="audio-settings" aria-label="Configuración de sonido">
+        <div>
+          <label
+            ><input type="checkbox" id="musicEnabled" /> Música ambiental</label
+          ><label
+            ><input type="checkbox" id="effectsEnabled" /> Efectos de
+            sonido</label
+          >
+        </div>
+        <label class="volume-label"
+          >Volumen
+          <input
+            id="audioVolume"
+            type="range"
+            min="0"
+            max="100"
+            value="35"
+            aria-label="Volumen de audio"
+        /></label>
+      </section>
+      <div class="menu-actions">
+        <button id="rulesButton">Cómo se juega <span>↗</span></button
+        ><button id="turnsButton">Orden de la ronda <span>↗</span></button
+        ><button id="historyButton">Diario de batallas <span>↗</span></button
+        ><button id="sourcesButton">Datos y fuentes <span>↗</span></button
+        ><button id="reset">Nueva partida <span>↺</span></button>
+      </div>
+      <p class="note">
+        El tablero y los habitantes solo cambian cuando se muestra el resultado.
+        Las partidas anteriores se adaptan al tablero provincial conservando los
+        bandos y sus posesiones.
+      </p>
+    </dialog>
+    <dialog id="rankingDialog">
+      <button class="close" aria-label="Cerrar">×</button>
+      <p class="eyebrow">EL EQUILIBRIO DE PODER</p>
+      <h2>Quién manda</h2>
+      <div class="demography">
+        <div><span>Habitantes en pie</span><strong id="people">—</strong></div>
+        <div>
+          <span>Pérdidas de guerra</span><strong id="casualties">0</strong>
+        </div>
+      </div>
+      <div id="ranking"></div>
+    </dialog>
+    <dialog id="historyDialog">
+      <button class="close" aria-label="Cerrar">×</button>
+      <p class="eyebrow" id="historyCount">SIN BATALLAS</p>
+      <h2>Diario de fronteras</h2>
+      <div id="history"></div>
+    </dialog>
+    <dialog id="turnsDialog">
+      <button class="close" aria-label="Cerrar">×</button>
+      <p class="eyebrow" id="roundTitle">ORDEN DE LA RONDA</p>
+      <h2>Un movimiento por bando.</h2>
+      <div id="roundQueue"></div>
+    </dialog>
+    <dialog id="rules">
+      <button class="close" aria-label="Cerrar">×</button>
+      <p class="eyebrow">EL REGLAMENTO</p>
+      <h2>La suerte tiene sus reglas.</h2>
+      <ol>
+        <li>
+          Las 19 comunidades y ciudades comienzan con sus 50 provincias y 2
+          ciudades reales. Una provincia conquistada aporta sus habitantes al
+          nuevo dueño. Un bando desaparece cuando pierde la última.
+        </li>
+        <li>
+          Cada ronda da un movimiento a cada bando, ordenado aproximadamente de
+          menor a mayor tamaño y población. Una comunidad liberada espera a la
+          siguiente ronda.
+        </li>
+        <li>
+          Solo puedes atacar una provincia fronteriza o costera conectada por
+          una zona marítima. Norte: costas de Galicia a País Vasco.
+          Mediterráneo: Murcia a Cataluña y Baleares. Sur: Murcia, costas de
+          Andalucía, Ceuta y Melilla. Canarias conecta sus dos provincias y las
+          costas de Andalucía, Galicia, Ceuta y Melilla. Las provincias
+          interiores no tienen paso marítimo.
+        </li>
+        <li>
+          El objetivo se anuncia antes de combatir: anexionar una provincia o,
+          raramente, liberar su comunidad original si ya no existe. La comunidad
+          liberada vuelve únicamente con la provincia o provincias de origen que
+          se liberen, aunque no sean todas. Si vence el atacante, primero cumple
+          el objetivo y después resuelve conquistas adicionales por el frente.
+        </li>
+        <li>
+          Se tiran tres dados por bando y se ordenan de mayor a menor. Cada
+          pareja suma su diferencia al ganador; un empate da +1 a la defensa. La
+          animación indica quién puntúa.
+        </li>
+        <li>
+          La población conserva una ventaja moderada: se moviliza un 75 % de la
+          población de la provincia de partida más un 25 % de la población del
+          bloque dividida por la raíz del número de provincias. El multiplicador
+          crece lentamente con esa proporción, hasta ×1,85. Siempre se tiran
+          tres dados; el bando mayor ya no acumula dados de reserva ni puntos
+          gratuitos. Un 40 % de batallas da una ventaja táctica de ×1,3,
+          repartida entre ambos bandos. En liberaciones se excluye la población
+          de la provincia a liberar del esfuerzo defensor.
+        </li>
+        <li>
+          La provincia que contiene la capital del bando defiende un 20 % más.
+          Si se pierde, la capital se traslada al azar a otra provincia que
+          conserve. Canarias comienza con una de sus dos capitales compartidas,
+          elegida al azar. Para Castilla y León se usa Valladolid, sede de sus
+          principales instituciones. Las capitales son una regla interna del
+          combate.
+        </li>
+        <li>
+          Las victorias pueden conquistar hasta dos provincias al llegar a 1,4
+          veces la puntuación rival, tres al duplicarla o cuatro al triplicarla.
+          Todas deben ser alcanzables desde las posesiones del vencedor; una
+          provincia liberada no sirve de puente aliado. Si un bando con ocho
+          veces menos población o fuerza movilizada da la sorpresa, gana por un
+          margen estrecho y solo cambia una provincia.
+        </li>
+        <li>
+          Todas las guerras causan bajas en ambos bandos: entre el 0,3 % y el
+          0,8 % de la población de cada uno, gane o pierda. Después, un ataque
+          fallido resta además un 2 % de los habitantes restantes del atacante.
+          Si la defensa consigue al menos el triple de puntos y un mínimo de
+          tres, puede contraatacar por el frente y quitar varias provincias,
+          dejando al atacante al menos una.
+        </li>
+        <li>
+          Las liberaciones son poco frecuentes: 2 % como objetivo, 2,5 % en
+          conquistas adicionales y 4 % en contraataques. Solo pueden revivir
+          comunidades ausentes y cada una recibe provincias de su origen. Una
+          batalla puede combinar anexiones y liberaciones.
+        </li>
+        <li>
+          Tras cada movimiento se muestra el resultado, seguido de una pausa
+          para ver el mapa actualizado; al cerrar la ronda aparece la
+          clasificación completa. El juego acaba con una pantalla de victoria
+          cuando un bando controla todo el tablero.
+        </li>
+      </ol>
+      <p class="note">
+        El modo Equilibrado dura unos 11 segundos por batalla, incluida una
+        pausa de mapa despejado. Los tres ritmos reservan más tiempo al
+        resultado para poder leerlo.
+      </p>
+    </dialog>
+    <dialog id="sources">
+      <button class="close" aria-label="Cerrar">×</button>
+      <p class="eyebrow">EL MAPA Y SUS HABITANTES</p>
+      <h2>Datos de partida</h2>
+      <p>
+        Población provincial oficial del Padrón a 1 de enero de 2025. Las
+        poblaciones de las comunidades se calculan sumando sus provincias.
+      </p>
+      <p>
+        <a
+          href="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-25362"
+          target="_blank"
+          rel="noopener"
+          >Tabla oficial: BOE / INE ↗</a
+        >
+      </p>
+      <p>
+        Límites provinciales del servicio SIU del Ministerio de Vivienda y
+        Agenda Urbana / IGN, simplificados para el mapa. Las cincuenta
+        provincias, Ceuta y Melilla son las unidades conquistables.
+      </p>
+      <p>
+        <a
+          href="https://mapas.fomento.gob.es/arcgis/rest/services/SIU/ENTIDADES_TERRITORIALES_EGRN/MapServer/2"
+          target="_blank"
+          rel="noopener"
+          >Cartografía provincial ↗</a
+        >
+      </p>
+      <p>
+        Canarias conserva su forma y distribución en un recuadro separado, a
+        escala uniforme. Ceuta y Melilla están ampliadas 2,4 veces para
+        distinguirlas; Marruecos permite situarlas en la costa africana.
+        Portugal, Francia y Marruecos son terreno neutral.
+      </p>
+      <p>
+        Fondo de Portugal y Francia:
+        <a
+          href="https://github.com/datasets/geo-countries"
+          target="_blank"
+          rel="noopener"
+          >Natural Earth / geo-countries</a
+        >, dominio público.
+      </p>
+      <p>
+        Banderas de
+        <a
+          href="https://en.wikipedia.org/wiki/Flags_of_the_autonomous_communities_of_Spain"
+          target="_blank"
+          rel="noopener"
+          >Wikimedia Commons</a
+        >. <a href="flags/SOURCES.json" target="_blank">Archivos originales</a>.
+      </p>
+      <p class="note">
+        Simulación lúdica: sus resultados no representan conflictos reales.
+      </p>
+    </dialog>
+    <script type="module" src="app.js?v=github1"></script>
+  </body>
+</html>
