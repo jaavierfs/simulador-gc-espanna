@@ -35,7 +35,7 @@ Abre en el móvil `http://IP_LOCAL_DEL_ORDENADOR:4173/`. Para compartirlo fuera 
 La configuración incluida sigue el [flujo oficial de GitHub Pages con Actions](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 
 1. Crea un repositorio en GitHub, por ejemplo `guerra-civil-espanola`. Un repositorio público permite usar Pages con GitHub Free.
-2. Sube **el contenido de esta carpeta** a la raíz del repositorio: `README.md`, `package.json`, `dist/`, `scripts/`, `tests/`, `docs/`, `data/` y, especialmente, **`.github/workflows/pages.yml`**. Descomprime el ZIP antes de subir los archivos. No subas únicamente el ZIP ni dejes todo dentro de una subcarpeta adicional.
+2. Sube **el contenido de esta carpeta** a la raíz del repositorio: `index.html`, `.nojekyll`, `README.md`, `package.json`, `dist/`, `scripts/`, `tests/`, `docs/`, `data/` y, especialmente, **`.github/workflows/pages.yml`**. Descomprime el ZIP antes de subir los archivos. No subas únicamente el ZIP ni dejes todo dentro de una subcarpeta adicional.
 3. Usa la rama **`main`**. Si utilizas otra, cambia `branches: [main]` en el workflow.
 4. En el repositorio, abre **Settings → Pages → Build and deployment → Source → GitHub Actions**.
 5. En **Actions**, abre **Publicar juego en GitHub Pages → Run workflow**. Si la primera ejecución se lanzó antes de activar Pages y falló, vuelve a ejecutarla después de completar el paso anterior.
@@ -124,3 +124,17 @@ Este comando descarga cartografía pública, vuelve a calcular vecindades y escr
 Las poblaciones, mapas y banderas tienen su procedencia detallada en [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md). Se conservan las licencias de las bibliotecas vendorizadas. No se ha asignado todavía una licencia propia al código original del juego; puedes añadir el archivo `LICENSE` que elijas. Las licencias de terceros se mantienen por separado.
 
 Este proyecto no incluye credenciales, configuración del alojamiento anterior ni historial Git privado. El directorio `dist/` es a la vez el código fuente de la web y el contenido que se publica: no hay un paso de compilación oculto.
+
+
+## Si Pages muestra el README en lugar del juego
+
+Eso suele indicar que se está publicando `main / (root)` en lugar del contenido de `dist/` mediante el workflow. GitHub busca un archivo de entrada en la carpeta publicada: [documentación oficial](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site).
+
+El proyecto incluye ahora un `index.html` en la raíz, junto al README, que abre automáticamente `./dist/`. Debe subirse a la raíz del repositorio, sin sustituir `dist/index.html` (la página real del juego). Incluye también `.nojekyll` para servir los archivos estáticos directamente.
+
+Hay dos configuraciones válidas:
+
+- **Recomendada:** Settings → Pages → Source → GitHub Actions; el workflow publica el juego de `dist/` directamente.
+- **Alternativa:** Deploy from a branch → `main` → `/ (root)`; el nuevo `index.html` raíz redirige al juego.
+
+No selecciones `/docs`: esa carpeta contiene documentación, no el juego. Tras subir los cambios, espera a que finalice el despliegue de Pages y recarga el enlace publicado. Si `dist/` ya se subió correctamente, también puedes abrir provisionalmente el enlace de Pages añadiendo `/dist/` al final.
